@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "558037036705",
+    "project_id": "yelpapp-2267e",
+    "storage_bucket": "yelpapp-2267e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558037036705:android:d88bfdd5404d4bdc590ae0",
+        "android_client_info": {
+          "package_name": "com.example.yelpapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558037036705-0fo5qq1vf9v354mf4euolrqn5q4luck9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpRcrRKIh_Bj76ttt7QEO_ikPF-m3KZYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558037036705-0fo5qq1vf9v354mf4euolrqn5q4luck9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
