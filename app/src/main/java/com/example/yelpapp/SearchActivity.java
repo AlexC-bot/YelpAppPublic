@@ -39,6 +39,10 @@ public class SearchActivity extends AppCompatActivity {
         finish();
     }
 
+    private void openFavoritesActivity(){
+        Intent intent = new Intent(this, FavoritesActivity.class);
+        startActivity(intent);
+    }
     //handles when itmes are selected from the menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -60,6 +64,8 @@ public class SearchActivity extends AppCompatActivity {
                                 }
                             }
                         });
+            case R.id.action_favorites:
+                openFavoritesActivity();
 
                 return true;
         }
