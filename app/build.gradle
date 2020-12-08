@@ -10,6 +10,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,6 +40,11 @@ dependencies {
 
     // FirebaseUI for Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
+
+    //Adding multidex support b/c the number of methods used exceeds 64k
+    //and the minSDKVersion is less than 21
+    implementation 'com.android.support:multidex:1.0.3'
+
 
 
 }
