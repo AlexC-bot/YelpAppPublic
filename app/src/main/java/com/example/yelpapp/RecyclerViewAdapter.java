@@ -12,25 +12,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.internal.HashAccumulator;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private static final String TAG = "RecyclerViewAdapter";
+    public static final String ANOTHER_MESSAGE = "AnotherMsg";
     int MAP_REQUEST = 777;
 
 
     private ArrayList<String> businessNames;
     private ArrayList<String> businessDescriptions;
+    private ArrayList<String> coordinates;
     private Context context;
+    //stores a hash map where the business name is the key
+    //and the value is the coordinates
+    private HashMap<String, String> businessCoords;
 
-    public RecyclerViewAdapter(ArrayList<String> businessNames, ArrayList<String> businessDescriptions, Context context ) {
+    public RecyclerViewAdapter(ArrayList<String> businessNames, ArrayList<String> businessDescriptions, ArrayList<String> coordinates , Context context ) {
         Log.d(TAG, "RecyclerViewAdapterConstructor: called.");
 
         this.businessDescriptions = businessDescriptions;
         this.businessNames = businessNames;
+        this.coordinates = coordinates;
         this.context = context;
-
+        this.businessCoords = new HashMap<>();
 
     }
 
@@ -48,6 +57,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.businessName.setText(businessNames.get(position));
         holder.businessInfo.setText(businessDescriptions.get(position));
+        businessCoords.put(businessNames.get(position), this.coordinates.get(position));
+
 
 
     }
@@ -61,8 +72,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView businessName;
         TextView businessInfo;
-        //ImageView mapButton;
-        //ImageView likeButton;
+
 
         public ViewHolder(View itemView){
 
@@ -76,6 +86,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onClick(View view) {
 
                     Intent intent = new Intent(context, MapsActivity.class);
+                    intent.putExtra(ANOTHER_MESSAGE, businessCoords.get(businessName.getText().toString()));
+
                     context.startActivity(intent);
 
                 }

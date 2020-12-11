@@ -25,10 +25,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
 
-        //Intent intent = getIntent();
-        //String message = intent.getStringExtra(RecyclerViewAdapter.MAP_REQUEST);
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(RecyclerViewAdapter.ANOTHER_MESSAGE);
+        String[] latLong = message.split(",");
+        lat = Double.parseDouble( latLong[0]);
 
-        //String[] latLong = message.split(",");
+        lon = Double.parseDouble(latLong[1]);
 
 
 
@@ -52,8 +54,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng coord = new LatLng(25.72935, -80.240789);
-        mMap.addMarker(new MarkerOptions().position(coord).title("Marker in Sydney"));
+        LatLng coord = new LatLng(lat, lon);
+        mMap.addMarker(new MarkerOptions().position(coord).title(""));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(coord));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coord, 15));
     }

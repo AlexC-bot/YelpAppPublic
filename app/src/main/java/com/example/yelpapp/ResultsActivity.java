@@ -86,9 +86,13 @@ public class ResultsActivity extends AppCompatActivity {
 
             //String price = biz.getString("price");
 
-            JSONObject coordinates = biz.getJSONObject("coordinates");
-            String latitude = coordinates.getString("latitude");
-            String longitude = coordinates.getString("longitude");
+            //getting the coordinates from the JSON response object
+            JSONObject coordinatesJSON = biz.getJSONObject("coordinates");
+            String latitude = coordinatesJSON.getString("latitude");
+            String longitude = coordinatesJSON.getString("longitude");
+
+            //adding the geo-coordinates to the coordinates array
+            coordinates.add(latitude+","+longitude);
 
 
 
@@ -135,7 +139,7 @@ public class ResultsActivity extends AppCompatActivity {
     private void initRecyclerView(){
         Log.d(TAG, "InitRecylerView(): init recyclerView.\n\n\n\n");
         RecyclerView recyclerView = findViewById(R.id.businessList);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(businessNames, businessDescriptions, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(businessNames, businessDescriptions, coordinates , this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
