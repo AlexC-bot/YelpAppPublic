@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
@@ -28,6 +30,8 @@ public class ResultsActivity extends AppCompatActivity {
 
     ArrayList<String> businessNames;
     ArrayList<String> businessDescriptions;
+    ArrayList<String> coordinates;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         businessNames = new ArrayList<>();
         businessDescriptions = new ArrayList<>();
+        coordinates = new ArrayList<>();
 
         businessList = findViewById(R.id.businessList);
 
@@ -56,11 +61,71 @@ public class ResultsActivity extends AppCompatActivity {
 
         //convert the response to a  JSON object
         JSONObject response = new JSONObject(message);
+
+        JSONArray businessesJSON = response.getJSONArray("businesses");
+
+
+
+
+        /*
         businessNames.add("Big Italy Pizza");
         businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
 
         businessNames.add("Little Italy Pizza");
         businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
+        */
+
+
+        for(int i=0; i<businessesJSON.length(); i++)
+        {
+            JSONObject biz = businessesJSON.getJSONObject(i);
+
+            String name = biz.getString("name");
+            businessNames.add(name);
+
+
+            //String price = biz.getString("price");
+
+            JSONObject coordinates = biz.getJSONObject("coordinates");
+            String latitude = coordinates.getString("latitude");
+            String longitude = coordinates.getString("longitude");
+
+
+
+            String rating = biz.getString("rating");
+
+
+            Boolean open = biz.getBoolean("is_closed");
+            String price;
+            try {
+                 price = biz.getString("price");
+
+            }
+            catch (JSONException e)
+            {
+                price = "No Price";
+            }
+
+
+
+
+            if(open) {
+                //businessNames.add("Little Italy Pizza");
+                //businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
+                businessDescriptions.add("Open · "+rating+"/5 · "+price);
+
+                //businessDescriptions.add("Open · "+rating+" · ");
+
+            }else{
+                businessDescriptions.add("Closed · "+rating+"/5 · "+price);
+
+            }
+
+
+
+
+        }
+
 
         initRecyclerView();
 
