@@ -1,10 +1,13 @@
 package com.example.yelpapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,10 +17,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
-    String FILENAME = "storage.json";
 
+    private static final String TAG = "ResultsActivity";
+
+    String FILENAME = "storage.json";
+    RecyclerView businessList;
+
+    ArrayList<String> businessNames;
+    ArrayList<String> businessDescriptions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +38,11 @@ public class ResultsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String response = intent.getStringExtra(SearchActivity.YELP_DATA);
 
+
+        businessNames = new ArrayList<>();
+        businessDescriptions = new ArrayList<>();
+
+        businessList = findViewById(R.id.businessList);
 
         try {
             parseResponse(response);
@@ -41,8 +56,23 @@ public class ResultsActivity extends AppCompatActivity {
 
         //convert the response to a  JSON object
         JSONObject response = new JSONObject(message);
+        businessNames.add("Big Italy Pizza");
+        businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
+
+        businessNames.add("Little Italy Pizza");
+        businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
+
+        initRecyclerView();
 
 
+    }
+
+    private void initRecyclerView(){
+        Log.d(TAG, "InitRecylerView(): init recyclerView.\n\n\n\n");
+        RecyclerView recyclerView = findViewById(R.id.businessList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(businessNames, businessDescriptions, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
     }
