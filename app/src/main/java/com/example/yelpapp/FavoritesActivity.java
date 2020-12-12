@@ -1,9 +1,12 @@
 package com.example.yelpapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,73 +16,72 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavoritesActivity extends AppCompatActivity {
 
     String FILENAME = "storage.json";
+    private static final String TAG = "FavoritesActivity";
+
+
+    ArrayList<String> businessNames;
+    ArrayList<String> businessDescriptions;
+    ArrayList<String> businessIds;
+    ArrayList<String> coordinates;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        businessNames = new ArrayList<>();
+        businessIds = new ArrayList<>();
+        businessDescriptions = new ArrayList<>();
+        coordinates = new ArrayList<>();
+
+        getFavorites();
     }
 
 
-    //this line of code checks the storage.json file is present within
-    //the internal storage
-    private boolean isFilePresent(Context context) {
-        String path = context.getFilesDir().getAbsolutePath() + "/" + FILENAME;
-        File file = new File(path);
-        return file.exists();
-    }
+    private void getFavorites(){
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+
+        List<BusinessModel> favorites = dataBaseHelper.getAllFavorites();
 
 
-    //this method reads the data from the storage file
-    private String readFile(Context context) {
-        try {
-            FileInputStream fis = context.openFileInput(FILENAME);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader bufferedReader = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
-            }
-            return sb.toString();
-        } catch (FileNotFoundException fileNotFound) {
-            return null;
-        } catch (IOException ioException) {
-            return null;
-        }
-    }
+        for(BusinessModel fav : favorites){
 
-    private boolean createFile(Context context, String jsonString){
+            //checks if any of the favorited business matches
+            //any of the businesses coming in from the new API response
 
-        try {
-            FileOutputStream fos = context.openFileOutput(FILENAME,Context.MODE_PRIVATE);
-            if (jsonString != null) {
-                fos.write(jsonString.getBytes());
-            }
-            fos.close();
-            return true;
-        } catch (FileNotFoundException fileNotFound) {
-            return false;
-        } catch (IOException ioException) {
-            return false;
-        }
-
-    }
-
-
-    //this file gets the saved data and populates the activity with the data
-    private void loadFavorites(){
-        //this variable will store the string representation of the
-        //the JSON data
-        if(isFilePresent(getApplicationContext())) {
-            String jsonData = readFile(getApplicationContext());
+            businessIds.add( fav.getId());
+            businessNames.add(fav.getName());
+            businessDescriptions.add(fav.getDescription());
+            coordinates.add(fav.getCoordinates());
 
         }
 
+        initRecyclerView();
 
     }
+
+    private void initRecyclerView(){
+        Log.d(TAG, "InitRecylerView(): init recyclerView.");
+        RecyclerView recyclerView = findViewById(R.id.businessList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(businessNames, businessDescriptions, coordinates , businessIds, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+    }
+
+
+
+
+
+
+
 }

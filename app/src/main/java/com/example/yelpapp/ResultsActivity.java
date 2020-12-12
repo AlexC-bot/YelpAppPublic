@@ -31,6 +31,7 @@ public class ResultsActivity extends AppCompatActivity {
     ArrayList<String> businessNames;
     ArrayList<String> businessDescriptions;
     ArrayList<String> coordinates;
+    ArrayList<String> businessIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class ResultsActivity extends AppCompatActivity {
         businessNames = new ArrayList<>();
         businessDescriptions = new ArrayList<>();
         coordinates = new ArrayList<>();
+        businessIds = new ArrayList<>();
 
         businessList = findViewById(R.id.businessList);
 
@@ -94,6 +96,8 @@ public class ResultsActivity extends AppCompatActivity {
             //adding the geo-coordinates to the coordinates array
             coordinates.add(latitude+","+longitude);
 
+            String id = biz.getString("id");
+            businessIds.add(id);
 
 
             String rating = biz.getString("rating");
@@ -139,57 +143,15 @@ public class ResultsActivity extends AppCompatActivity {
     private void initRecyclerView(){
         Log.d(TAG, "InitRecylerView(): init recyclerView.\n\n\n\n");
         RecyclerView recyclerView = findViewById(R.id.businessList);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(businessNames, businessDescriptions, coordinates , this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(businessNames, businessDescriptions, coordinates , businessIds, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
     }
 
-    //This checks whether the storage file exists
-    public boolean isFilePresent(Context context) {
-        String path = context.getFilesDir().getAbsolutePath() + "/" + FILENAME;
-        File file = new File(path);
-        return file.exists();
-    }
-
-    public void addFavorite(){
-
-    }
-
-    private boolean createFile(Context context, String jsonString){
-        try {
-            FileOutputStream fos = context.openFileOutput(FILENAME,Context.MODE_PRIVATE);
-            if (jsonString != null) {
-                fos.write(jsonString.getBytes());
-            }
-            fos.close();
-            return true;
-        } catch (FileNotFoundException fileNotFound) {
-            return false;
-        } catch (IOException ioException) {
-            return false;
-        }
-
-    }
 
 
-    //saves a favorite  to the file
-    private boolean saveFavorite(Context context, String jsonString){
-        try{
-            FileOutputStream fOut = openFileOutput(FILENAME,  MODE_APPEND);
-            OutputStreamWriter osw = new OutputStreamWriter(fOut);
-            osw.write(jsonString);
-            osw.flush();
-            osw.close();
-        }
-        catch (FileNotFoundException fileNotFound) {
-            return false;
-        } catch (IOException ioException) {
-            return false;
-        }
-        return false;
-    }
 
 
 

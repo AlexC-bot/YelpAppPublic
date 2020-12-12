@@ -75,7 +75,7 @@ public class SearchActivity extends AppCompatActivity {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
 
-                    Toast.makeText(getApplicationContext(), "long: " + longitude + ", lat: " + latitude+", keyword: "+keyWordsString, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "long: " + longitude + ", lat: " + latitude+", keyword: "+keyWordsString, Toast.LENGTH_SHORT).show();
 
                     String url = "https://api.yelp.com/v3/businesses/search?term="+keyWordsString+"&latitude="+latitude+"&longitude="+longitude;
 
