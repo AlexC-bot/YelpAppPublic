@@ -69,13 +69,6 @@ public class ResultsActivity extends AppCompatActivity {
 
 
 
-        /*
-        businessNames.add("Big Italy Pizza");
-        businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
-
-        businessNames.add("Little Italy Pizza");
-        businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
-        */
 
 
         for(int i=0; i<businessesJSON.length(); i++)
@@ -103,7 +96,7 @@ public class ResultsActivity extends AppCompatActivity {
             String rating = biz.getString("rating");
 
 
-            Boolean open = biz.getBoolean("is_closed");
+            boolean closed = biz.getBoolean("is_closed");
             String price;
             try {
                  price = biz.getString("price");
@@ -117,7 +110,7 @@ public class ResultsActivity extends AppCompatActivity {
 
 
 
-            if(open) {
+            if(!closed) {
                 //businessNames.add("Little Italy Pizza");
                 //businessDescriptions.add("11:30 AM - 10:00PM  · 4/5 · $$$$");
                 businessDescriptions.add("Open · "+rating+"/5 · "+price);
