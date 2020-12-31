@@ -43,7 +43,7 @@ public class SearchActivity extends AppCompatActivity {
     public static final String YELP_DATA = "com.examp.yelpapp.YELP_DATA";
     private static final String TAG = "SearchActivity";
 
-    public static final String API_KEY = "yw3x2eNvZC3k0XpfCNTX0l92DIis1AnSBoegKWBTfkl3dp4FjXKOgwqL_FGtnTgaQMur9w17Imrd9nsf7R5_-v58k1wwBMC7iQvWCNQ0zl6pt6BmZsC4Vwqol5HOX3Yx";
+    public static final String API_KEY = "API Key";
 
     private LocationListener locationListener;
     private LocationManager locationManager;
